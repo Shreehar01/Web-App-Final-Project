@@ -176,10 +176,54 @@
     locations = {};
 	const latitude = document.getElementsByClassName("latitude");
 	const longitude = document.getElementsByClassName("longitude");
-	for (var i = 0; i < latitude.length; i++){
-		tempLat = parseFloat(latitude[i].dataset.value);
-		tempLong = parseFloat(longitude[i].dataset.value);
-		L.marker([tempLat, tempLong]).addTo(mymap);
+	
+	
+	var information;
+	let elements = document.getElementsByTagName('tr');
+	var contactList = []
+	for (let i = 1; i < elements.length; i++){
+		tempObject = {}
+		tempObject["id"] = elements[i].dataset.id;
+		childNodes = elements[i].children;
+		for (let j = 0; j < 14; j ++){
+			tempObject[childNodes[j].dataset.key] = childNodes[j].textContent;  
+		}
+		contactList[i-1] = tempObject;
+	}
+
+	
+
+
+
+
+	var shortDescription;
+	function customTip() {
+		this.unbindTooltip();
+		if(!this.isPopupOpen()) this.bindTooltip(shortDescription).openTooltip();
+	}
+
+	function customPop() {
+		this.unbindTooltip();
+	}
+	
+	for (var i = 0; i < contactList.length; i++){
+		tempLat = parseFloat(contactList[i]["latitude"]);
+		tempLong = parseFloat(contactList[i]["longitude"]);
+		let marker = L.marker([tempLat, tempLong]).addTo(mymap);
+		shortDescription = contactList[i]["suffix"] + " " + contactList[i]["firstname"] + " " + contactList[i]["lastname"]; 
+		
+		longDescription = ""
+		longDescription += "<p> Name: " + shortDescription + "</p>";
+		longDescription += "<p> Street: " + contactList[i]["street"] + "</p>";
+		longDescription += "<p> City and State: " + contactList[i]["city"] + ", " + contactList[i]["state"] + "</p>"
+		longDescription += "<p> Zip: " + contactList[i]["zip"] + "</p>";
+		longDescription += "<p> Phone: " + contactList[i]["phone"] + "</p>";
+		longDescription += "<p> Latitude : " + contactList[i]["latitude"] + "</p>";
+		longDescription += "<p> Longitude : " + contactList[i]["longitude"] + "</p>";
+		console.log(contactList[i]["street"]);
+		marker.bindPopup(longDescription);
+		marker.on('mouseover', customTip);
+		marker.on('click', customPop);
 	}
 
 
@@ -203,7 +247,7 @@
 			if (i == 0 || i == 5 || i >= 9){
 				continue;
 			}
-			document.getElementById(rowNode.children[i].dataset.key).value = rowNode.children[i].dataset.value;	
+			document.getElementById(rowNode.children[i].dataset.key).value = rowNode.children[i].textContent;	
 		}
 
 		// To Do.
