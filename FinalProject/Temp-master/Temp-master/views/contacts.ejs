@@ -25,6 +25,12 @@
 <body>
 
 	<section id="initialPage">
+		<a href="/mailer">
+			<button>Create</button>
+		</a>
+		<form method="get" action="/logout">
+			<button type="submit"> Log Out </button>
+		</form>
 		<% if (values.length == 0){ %>
 			<h2>No contact information stored</h2>
 		<% } else{ %>
@@ -54,7 +60,7 @@
 					<tr onClick="flyMap(this)" id="<%= values[rows]["_id" ]%>"  data-id="<%= values[rows]["_id"] %>">
 						<% for (keys in values[rows]) { %>
 							<% if (keys != "_id") {%>
-								<td class="<%= keys %>" data-key="<%= keys %>" data-value=<%= values[rows][keys] %>> <%= values[rows][keys] %></td>
+								<td data-key="<%= keys %>" data-value=<%= values[rows][keys] %>> <%= values[rows][keys] %></td>
 							<% } %>
 						<% } %>
 						<td><button onclick="showEditPage(this)">Update</button> <button onclick="deleteContact(this)">Delete</button> </td>
@@ -64,9 +70,6 @@
 		</table>
 		<% } %>
 		<br>
-		<a href="./mailer">
-			<button>Return Home</button>
-		</a>
 		<div id="myMap"></div>
 	</section>
 	
@@ -129,11 +132,11 @@
 	
 				<p>
 					<label>How may we contact you?</label>
-					<input type="checkbox" id="phone" name="contactphone" value="Phone">
+					<input type="checkbox" id="cPhone" name="contactphone" value="Phone">
 					<label for="phone"> Phone</label>
 					<input type="checkbox" id="mail" name="contactmail" value="Mail">
 					<label for="mail"> Mail</label>
-					<input type="checkbox" id="email" name="contactemail" value="Email">
+					<input type="checkbox" id="cEmail" name="contactemail" value="Email">
 					<label for="email"> Email</label>
 					<input type="checkbox" id="any" name="contactany" value="Any">
 					<label for="any" id="any"> Any</label>
@@ -174,8 +177,8 @@
             'marker-color':'#fa0'
         })};
     locations = {};
-	const latitude = document.getElementsByClassName("latitude");
-	const longitude = document.getElementsByClassName("longitude");
+	// const latitude = document.getElementsByClassName("latitude");
+	// const longitude = document.getElementsByClassName("longitude");
 	
 	
 	var information;
@@ -220,7 +223,6 @@
 		longDescription += "<p> Phone: " + contactList[i]["phone"] + "</p>";
 		longDescription += "<p> Latitude : " + contactList[i]["latitude"] + "</p>";
 		longDescription += "<p> Longitude : " + contactList[i]["longitude"] + "</p>";
-		console.log(contactList[i]["street"]);
 		marker.bindPopup(longDescription);
 		marker.on('mouseover', customTip);
 		marker.on('click', customPop);
@@ -250,22 +252,20 @@
 			document.getElementById(rowNode.children[i].dataset.key).value = rowNode.children[i].textContent;	
 		}
 
-		// To Do.
+
+		
 		if (childNodes[9].dataset.value == "Yes" && childNodes[10].dataset.value == "Yes" && childNodes[11].dataset.value == "Yes"){
 			document.getElementById("any").checked = true;	
 		} 
 		else{
 			if (childNodes[9].dataset.value == "Yes"){
-				console.log("Phone");
-				document.getElementById("phone").checked = true
+				document.getElementById("cPhone").checked = true
 			}
 			if (childNodes[10].dataset.value == "Yes"){
-				console.log("Mail");
 				document.getElementById("mail").checked = true
 			}
 			if (childNodes[11].dataset.value == "Yes"){
-				console.log("Email");
-				document.getElementById("email").checked = true
+				document.getElementById("cEmail").checked = true
 			}
 		}
 		//  To Do. Update the values of the radio and select box.
