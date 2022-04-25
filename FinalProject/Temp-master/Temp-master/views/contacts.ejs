@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+		integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+		crossorigin="" />
+
+	<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+		integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+		crossorigin="">
+	</script>  
+	<link rel="stylesheet" href="https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.css" />
+	<script src="https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.js"></script>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<title>Contacts</title>
+</head>
+<style>
+	#myMap{
+		width:70%;
+		height: 600px;
+		margin-left: 5px;
+		margin-top: 30px;
+	}
+</style>
+<body>
+
+	<section id="initialPage">
+		<% if (values.length == 0){ %>
+			<h2>No contact information stored</h2>
+		<% } else{ %>
+		<table border="1">
+			<caption> <h3>Contact List</h3></caption>
+			<thead>
+				<tr>
+					<th> Suffix </th>
+					<th> First Name</th>
+					<th> Last Name</th>
+					<th> Street </th>
+					<th> City </th>
+					<th> State </th>
+					<th> Zip </th>
+					<th> Phone </th>
+					<th> Email </th>
+					<th> Contact Phone </th>
+					<th> Contact Mail </th>
+					<th> Contact Email </th>
+					<th> Latitude </th>
+					<th> Longitude </th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				<% for (rows in values) { %>
+					<tr onClick="flyMap(this)" id="<%= values[rows]["_id" ]%>"  data-id="<%= values[rows]["_id"] %>">
+						<% for (keys in values[rows]) { %>
+							<% if (keys != "_id") {%>
+								<td class="<%= keys %>" data-key="<%= keys %>" data-value=<%= values[rows][keys] %>> <%= values[rows][keys] %></td>
+							<% } %>
+						<% } %>
+						<td><button onclick="showEditPage(this)">Update</button> <button onclick="deleteContact(this)">Delete</button> </td>
+					</tr>
+				<% } %>
+			</tbody>
+		</table>
+		<% } %>
+		<br>
+		<a href="./mailer">
+			<button>Return Home</button>
+		</a>
+		<div id="myMap"></div>
+	</section>
+	
+	
+	
+	
+	
+	
+	<section id="editPage" style="display:none;">
+		Update the contacts
+		<form method="post" action="/contacts/update">
+			<fieldset style="display: inline-block">
+				<p>
+					<input type="radio" id="mr" name="suffix" value="Mr." checked>
+					<label for="mr">Mr.</label>
+					<input type="radio" id="mrs" name="suffix" value="Mrs.">
+					<label for="mrs">Mrs.</label>
+					<input type="radio" id="ms" name="suffix" value="Ms.">
+					<label for="ms">Ms.</label>
+					<input type="radio" id="dr" name="suffix" value="Dr.">
+					<label for="dr">Dr.</label>
+				</p>
+				
+				<p>
+					<label for="firstname"> First Name:</label>
+					<input type="text" id="firstname" name="firstname" value="" required>
+					<label for="lastname"> Last Name:</label>
+					<input type="text" id="lastname" name="lastname" value="" required>
+				</p>
+	
+				<p>
+					<label for="street"> Street:</label>
+					<input type="text" id="street" name="street" value="" required>
+					<label for="city"> City:</label>
+					<input type="text" id="city" name="city" value="" required>
+				</p>
+	
+				<p>
+					<label for="state">State:</label>
+					<select name="state" id="state">
+						<option value="NJ" selected="selected">NJ</option>
+						<option value="NY">NY</option>
+						<option value="PA">PA</option>
+						<option value="CT">CT</option>
+					</select>
+					<label for="zip"> Zip:</label>
+					<input type="text" id="zip" name="zip" value="" required>
+				</p>
+				
+				<p>
+					<label for="phone"> Phone:</label>
+					<input type="tel" id="phone" name="phone" value="" required>
+				</p>
+				
+				<p>
+					<label for="email"> Email:</label>
+					<input type="email" id="email" name="email" value="" required>
+					<input id="contactIdhidden" type="hidden" name="contactId" value = ""/>
+				</p>    
+	
+				<p>
+					<label>How may we contact you?</label>
+					<input type="checkbox" id="phone" name="contactphone" value="Phone">
+					<label for="phone"> Phone</label>
+					<input type="checkbox" id="mail" name="contactmail" value="Mail">
+					<label for="mail"> Mail</label>
+					<input type="checkbox" id="email" name="contactemail" value="Email">
+					<label for="email"> Email</label>
+					<input type="checkbox" id="any" name="contactany" value="Any">
+					<label for="any" id="any"> Any</label>
+					
+				</p>
+				
+				
+			</fieldset>
+			<br>
+			<button onclick="hideEditPage(this)" type="button">Cancel</button>
+			<button type="submit">Update</button>
+		</form>
+	</section>
+    
+</body>
+
+
+
+
+
+
+<script>
+	var mymap, geocoder, marker = [], locations;
+	L.mapbox.accessToken = 'pk.eyJ1Ijoic2pvc2hpNCIsImEiOiJjbDIzaWI4cW8wZDl1M2lxZTJlMjdraWRxIn0.XbNTOeb7oQStDorVMlGzWQ';
+	mymap = L.mapbox.map('myMap').setView([ 41.08262, -74.17839 ], 2);
+    L.tileLayer(`https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=${L.mapbox.accessToken}`, {
+    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    maxZoom: 18,
+    id: 'mapbox/streets-v11',
+    tileSize: 512,
+    zoomOffset: -1,
+    accessToken: L.mapbox.accessToken
+    }).addTo(mymap)
+    geocoder = L.mapbox.geocoder('mapbox.places');
+	marker = {
+        icon: L.mapbox.marker.icon({
+            'marker-size':'large',
+            'marker-color':'#fa0'
+        })};
+    locations = {};
+	const latitude = document.getElementsByClassName("latitude");
+	const longitude = document.getElementsByClassName("longitude");
+	for (var i = 0; i < latitude.length; i++){
+		tempLat = parseFloat(latitude[i].dataset.value);
+		tempLong = parseFloat(longitude[i].dataset.value);
+		L.marker([tempLat, tempLong]).addTo(mymap);
+	}
+
+
+	const flyMap = (node) =>{
+		let latitude = node.children[12].dataset.value;
+		let longitude = node.children[13].dataset.value;
+		let coordinates = [latitude, longitude];
+		mymap.flyTo(coordinates, 8);
+	}
+
+
+	const showEditPage = (node) => {
+		let rowNode = node.parentNode.parentNode;
+		let mainSection = document.getElementById("initialPage");
+		mainSection.style.display = 'none';
+		let editSection = document.getElementById("editPage");
+		editSection.style.display = 'block';
+		let childNodes = rowNode.children;
+		console.log(childNodes);
+		for (let i = 0; i < childNodes.length; i++){
+			if (i == 0 || i == 5 || i >= 9){
+				continue;
+			}
+			document.getElementById(rowNode.children[i].dataset.key).value = rowNode.children[i].dataset.value;	
+		}
+
+		// To Do.
+		if (childNodes[9].dataset.value == "Yes" && childNodes[10].dataset.value == "Yes" && childNodes[11].dataset.value == "Yes"){
+			document.getElementById("any").checked = true;	
+		} 
+		else{
+			if (childNodes[9].dataset.value == "Yes"){
+				console.log("Phone");
+				document.getElementById("phone").checked = true
+			}
+			if (childNodes[10].dataset.value == "Yes"){
+				console.log("Mail");
+				document.getElementById("mail").checked = true
+			}
+			if (childNodes[11].dataset.value == "Yes"){
+				console.log("Email");
+				document.getElementById("email").checked = true
+			}
+		}
+		//  To Do. Update the values of the radio and select box.
+		document.getElementById("contactIdhidden").value = rowNode.dataset.id;
+	}
+	
+
+	const hideEditPage = (node) => {
+		let mainSection = document.getElementById("initialPage");
+		mainSection.style.display = 'block';
+		let editSection = document.getElementById("editPage");
+		editSection.style.display = 'none';
+	}
+
+
+	const deleteContact = async (node) => {
+		parent = node.parentNode.parentNode;
+		let response = await axios.post('/contacts/delete', {id: parent.dataset.id});
+		if (response.data.message == "success"){
+			window.location.reload();
+		}
+	}
+</script>
+</html>
+
+

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+    <p> 
+        <b>
+            <h3>Contact Information Submitted</h3>
+            <% for (v in value) {  %>
+                <p>
+					<% if (v != "_id") {%>
+                    	<%= v %>: <%= value[v] %>
+					<%} %>
+                </p>
+            <% } %>
+        </b>
+    </p>
+    <a href="contacts" style="text-decoration:none">
+        <button>See Contact List</button>
+    </a>
+    <a href="mailer">
+        <button>Fill Form Again</button>
+    </a>
+   
+</body>
+</html>
