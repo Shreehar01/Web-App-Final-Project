@@ -11,6 +11,7 @@ router.get('/', function (req, res, next) {
 router.post('/', function (req, res, next) {
     console.log("Initiated");
 	let body = req.body;
+    console.log("Initiated: ", req.body);
     let tempData = {};
     tempData["Name"] = [body["suffix"], body["firstname"], body["lastname"]].join(' ');
     tempData["Address"] = [body["street"], body["city"], body["state"]].join(', ') + " " + body["zip"];

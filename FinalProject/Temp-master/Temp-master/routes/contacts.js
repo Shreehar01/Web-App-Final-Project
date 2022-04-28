@@ -21,6 +21,7 @@ var ensureLoggedIn = function(req, res, next) {
 
 router.get('/', ensureLoggedIn, async function (req, res, next) {
 	try{
+		console.log('Called');
 		let results = await database.get().db('contacts').collection('contacts').find().toArray();
 		console.log(results);
 		res.render('contacts', { values: results });
@@ -30,6 +31,8 @@ router.get('/', ensureLoggedIn, async function (req, res, next) {
 });
 
 router.post('/update', ensureLoggedIn, function (req, res, next) {
+	console.log("Update was called.");
+	console.log(req.body);
 	let body = req.body;
     let contactInfo = body;
 	let contactId = body['contactId']
@@ -44,7 +47,7 @@ router.post('/update', ensureLoggedIn, function (req, res, next) {
 		contactInfo["latitude"] = geoData.features[0].center[1];	
 		contactInfo["longitude"] = geoData.features[0].center[0];
 		console.log(contactInfo);
-	
+		console.log(contactId);
         await database.get().db('contacts').collection('contacts').updateOne({_id:new mongodb.ObjectID(contactId)},{ $set:contactInfo});
         res.redirect('/contacts/');
 	});
@@ -52,6 +55,7 @@ router.post('/update', ensureLoggedIn, function (req, res, next) {
 });
 
 router.post('/delete', ensureLoggedIn, async function (req, res, next) {
+	console.log("Delete was called.")
 	let contactId = req.body.id;
 	await database.get().db('contacts').collection('contacts').deleteOne({_id:new mongodb.ObjectID(contactId)});
 	// res.redirect('/contacts/');
