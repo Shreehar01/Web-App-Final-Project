@@ -1,10 +1,15 @@
-button{
+.loginbutton{
     width: 100%;
     margin-top:20px;
 }
 
 p{
     text-align: center;
+}
+
+.card{
+    width: 20rem; 
+    margin-top: 8%;
 }
 
 .card-title{

@@ -11,3 +11,17 @@
 p{
     color: #656565;
 }
+
+.col-md-6{
+    margin-left:0px;
+    margin-right:0px;
+    padding-left:1.2px;
+    padding-right:1.2px;
+}
+
+.col-sm-12{
+    margin-left:0px;
+    margin-right:0px;
+    padding-left:1.2px;
+    padding-right:1.2px;
+}

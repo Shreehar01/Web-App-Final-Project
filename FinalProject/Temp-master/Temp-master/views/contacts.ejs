@@ -24,13 +24,6 @@
 	<link rel="stylesheet" href="/stylesheets/common.css" />
 	<link rel="stylesheet" href="/stylesheets/contacts.css" />
 </head>
-<style>
-	#myMap{
-		width:100%;
-		height: 600px;
-		margin-left: 5px;
-	}
-</style>
 <body>
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="/mailer">
@@ -41,19 +34,20 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-          <div class="navbar-nav">
+          <div class="navbar-nav mr-auto">
             <a class="nav-item nav-link" href="/mailer">Create Contact</a>
             <a class="nav-item nav-link active" href="/contacts">Contacts</a>
           </div>
-        </div>
-        <form class="form-inline">
+		  <form class="form-inline">
             <button onclick="location.href='/logout'" type="button" class="btn btn-outline-danger  my-2 my-sm-0">Log Out</button>
-        </form>
+          </form>
+        </div>
+        
     </nav>
 	<section id="initialPage">
 		<div class="container">  
 			<div class="row justify-content-md-center">
-				<div class="card" style="width: 100rem; margin-top: 1%">
+				<div class="card card1">
 					<div class="card-body">
 						<% if (values.length == 0){ %>
 							<h5 class="card-title">Contact List Empty </h5>
@@ -117,7 +111,7 @@
 													<% } %>
 												<% } %>
 												<td>
-													<div style="display: flex;">
+													<div class="modifyButtons">
 														<button class="btn btn-outline-info iconClass" onclick="showEditPage(this)"><i class="fas fa-edit"></i></button>
 														<button class="btn btn-outline-danger iconClass" onclick="deleteContact(this)"><i class="fas fa-trash-alt"></i></button> 
 													</div>
@@ -142,75 +136,108 @@
 	
 	
 	
-	<section id="editPage" style="display:none;">
-		
-		
+	<section id="editPage">
 		
 		<div class="container">  
 			<div class="row justify-content-md-center">
-				<div class="card" style="width: 40rem; margin-top: 8%">
+				<div class="card card2">
 					<div class="card-body">
 						<h5 class="card-title">Edit Contact</h5>
 							<form method="post" action="/contacts/update">
-								<div class="form-check form-check-inline selection">
-									<input class="form-check-input" type="radio" id="mr" name="suffix" value="Mr.">
-									<label class="form-check-label" for="mr">Mr.</label>
+								<div class="row shifted">
+									<div class="form-check form-check-inline selection">
+										<input class="form-check-input" type="radio" id="mr" name="suffix" value="Mr." checked="checked">
+										<label class="form-check-label" for="mr">Mr.</label>
+									</div>
+									<div class="form-check form-check-inline selection">
+										<input class="form-check-input" type="radio" id="mrs" name="suffix" value="Mrs.">
+										<label class="form-check-label" for="mrs">Mrs.</label>
+									</div>
+									<div class="form-check form-check-inline selection">
+										<input class="form-check-input" type="radio" id="ms" name="suffix" value="Ms.">
+										<label class="form-check-label" for="ms">Ms.</label>
+									</div>
+									<div class="form-check form-check-inline selection">
+										<input class="form-check-input" type="radio" id="dr" name="suffix" value="Dr.">
+										<label class="form-check-label" for="dr">Dr.</label>
+									</div>
 								</div>
-								<div class="form-check form-check-inline selection">
-									<input class="form-check-input" type="radio" id="mrs" name="suffix" value="Mrs.">
-									<label class="form-check-label" for="mrs">Mrs.</label>
+								<div class="row">
+									<div class="col-md-6 col-sm-12">
+										<div class="input-group mb-3">
+											<input type="text" id="firstname" name="firstname" value="" required class="form-control" placeholder="First Name">
+										</div>
+									</div>
+									<div class="col-md-6 col-sm-12">
+										<div class="input-group mb-3">
+											<input type="text" id="lastname" name="lastname" value="" required class="form-control" placeholder="Last Name">
+										</div>
+									</div>
 								</div>
-								<div class="form-check form-check-inline selection">
-									<input class="form-check-input" type="radio" id="ms" name="suffix" value="Ms.">
-									<label class="form-check-label" for="ms">Ms.</label>
+								<div class="row">
+									<div class="col-md-6 col-sm-12">
+										<div class="input-group mb-3">
+											<input type="text" id="street" name="street" value="" class="form-control md-hidden" placeholder="Street">
+										</div>
+									</div>
+									<div class="col-md-6 col-sm-12">
+										<div class="input-group mb-3">
+											<input type="text" id="city" name="city" value="" required class="form-control" placeholder="City">
+										</div>
+									</div>
 								</div>
-								<div class="form-check form-check-inline selection">
-									<input class="form-check-input" type="radio" id="dr" name="suffix" value="Dr.">
-									<label class="form-check-label" for="dr">Dr.</label>
-								</div>
-								<div class="input-group mb-3">
-									<input type="text" id="firstname" name="firstname" value="" required class="form-control" placeholder="First Name">  &nbsp;
-									<input type="text" id="lastname" name="lastname" value="" required class="form-control" placeholder="Last Name">  &nbsp;
-								</div>
-								<div class="input-group mb-3">
-									<input type="text" id="street" name="street" value="" class="form-control" placeholder="Street">  &nbsp;
-									<input type="text" id="city" name="city" value="" required class="form-control" placeholder="City">  &nbsp;
-								</div>
-								<div class="input-group mb-3">
-									<label class="input-group-text" for="state">State</label>
-									<select class="form-select  dropdown" name="state" id="state">
+								<div class="input-group mb-3 shifted">
+									<label class="input-group-text stateClass" for="state">State</label>
+									<select class="form-select  dropdown"  name="state" id="state">
 									<option value="NJ">NJ</option>
 									<option value="NY">NY</option>
 									<option value="PA">PA</option>
 									<option value="CT">CT</option>
-									</select> &nbsp;
-									<input type="text" id="zip" name="zip" value="" required class="form-control" placeholder="Zip">
+									</select>
+									<input type="text" name="zip" id="zip" value="" required class="form-control zipcode" placeholder="Zip">
 								</div>
-								<div class="input-group mb-3">
-									<input type="tel" id="phone" name="phone" value="" required class="form-control" placeholder="Telephone">  &nbsp;
-									<input type="email" id="email" name="email" value="" required class="form-control" placeholder="Email">  &nbsp;
+								
+								<div class="row">
+									<div class="col-md-6 col-sm-12">
+										<div class="input-group mb-3">
+											<input type="tel" id="phone" name="phone" value="" required class="form-control" placeholder="Telephone">
+										</div>
+									</div>
+									<div class="col-md-6 col-sm-12">
+										<div class="input-group mb-3">
+											<input type="email" id="email" name="email" value="" required class="form-control" placeholder="Email">
+										</div>
+									</div>
 								</div>
-								<div class="form-check form-check-inline selection">
-									<input class="form-check-input" type="checkbox" id="cPhone" name="contactphone" value="Phone">
-									<label class="form-check-label" for="contactphone">Phone</label>
-									<input id="contactIdhidden" type="hidden" name="contactId" value = ""/>
+								<div class="row shifted">
+									<div class="form-check form-check-inline selection">
+										<input class="form-check-input" type="checkbox" id="cPhone" name="contactphone" value="Phone">
+										<label class="form-check-label" for="phone">Phone</label>
+									</div>
+									<div class="form-check form-check-inline selection">
+										<input class="form-check-input" type="checkbox" id="cMail" name="contactmail" value="Mail">
+										<label class="form-check-label" for="mail">Mail</label>
+									</div>
+									<div class="form-check form-check-inline selection">
+										<input class="form-check-input" type="checkbox" id="cEmail" name="contactemail" value="Email">
+										<label class="form-check-label" for="email">Email</label>
+										<input id="contactIdhidden" type="hidden" name="contactId" value = ""/>
+
+									</div>
+									<div class="form-check form-check-inline selection">
+										<input class="form-check-input" type="checkbox" id="any" name="contactany" value="Any">
+										<label class="form-check-label" for="any">Any</label>
+									</div>
 								</div>
-								<div class="form-check form-check-inline selection">
-									<input class="form-check-input" type="checkbox" id="cMail" name="contactmail" value="Mail">
-									<label class="form-check-label" for="contactmail">Mail</label>
+								<div class="row shifted">
+									<div class="input-group mb-3">
+										<div class="input-group mb-3">
+											<button type="button" onclick="location.href='/contacts'" class="btn btn-danger">Cancel</button> &nbsp;
+											<button type="submit" class="btn btn-info">Update</button> 
+										</div>
+									</div>
 								</div>
-								<div class="form-check form-check-inline selection">
-									<input class="form-check-input" type="checkbox" id="cEmail" name="contactemail" value="Email">
-									<label class="form-check-label" for="contactemail">Email</label>
-								</div>
-								<div class="form-check form-check-inline selection">
-									<input class="form-check-input" type="checkbox" id="any" name="contactany" value="Any" checked="checked">
-									<label class="form-check-label" for="contactany">Any</label>
-								</div>
-								<div class="input-group mb-3">
-									<button type="button" onclick="location.href='/contacts'" class="btn btn-danger">Cancel</button> &nbsp;
-									<button type="submit" class="btn btn-info">Update</button> 
-								</div>
+								
 							</form>
 					</div>
 				</div>

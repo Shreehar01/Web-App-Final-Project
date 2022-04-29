@@ -9,6 +9,29 @@
     border-radius: 5%;
 }
 
+.card{
+    width: 40rem; 
+    margin-top: 8%;
+}
+
 .row{
     margin:auto;
+}
+
+.zipcode{
+    margin-left:2.4px;
+}
+
+@media only screen and (max-width: 200px) {
+    .stateClass{
+        margin-bottom:14px;
+    }
+    .dropdown{
+        margin-bottom:14px;
+
+    }
+}
+
+.shifted{
+    margin-left: 1.2px;
 }

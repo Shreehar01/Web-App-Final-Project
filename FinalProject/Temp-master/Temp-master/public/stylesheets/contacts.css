@@ -9,6 +9,52 @@
     border-radius: 5%;
 }
 
+.row{
+    margin:auto;
+}
+
+.card1{
+    width: 100rem; 
+    margin-top: 1%;
+}
+
+.card2{
+    width: 40rem; 
+    margin-top: 8%;
+}
+
+.zipcode{
+    margin-left:2.4px;
+}
+
+#myMap{
+    width:100%;
+    height: 600px;
+    margin-left: 5px;
+}
+
+.modifyButtons{
+    display: flex;
+}
+
+#editPage{
+    display:none;
+}
+
+@media only screen and (max-width: 200px) {
+    .stateClass{
+        margin-bottom:14px;
+    }
+    .dropdown{
+        margin-bottom:14px;
+
+    }
+}
+
+.shifted{
+    margin-left: 1.2px;
+}
+
 i{			
     width:15px;
 }
@@ -29,3 +75,7 @@ tr>td{
 .listEmpty{
     margin-bottom:50px;
 }
+
+
+
+
