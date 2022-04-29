@@ -1,35 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Project 1</title>
+    <title>ContactBook</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <style>
-        .card{
-            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-            transition: 0.3s;
-        }
-        .card-title{
-            text-align: center;
-            color: #656565;
-        }
-        .selection{
-            margin-bottom:0.75rem;
-            color:#929292;
-        }
-        .dropdown{
-            width:30%;
-            color: #929292;
-            border-radius: 5%;
-        }
-    </style>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/stylesheets/common.css" />
+	<link rel="stylesheet" href="/stylesheets/mailer.css" />
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="mailer">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTeT1mojRZxGhiWlFYCAXKRmzh9Y7FiS_DV_g&usqp=CAU" width="30" height="30" class="d-inline-block align-top" alt="">
+            <img src="/images/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
             ContactBook
           </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -72,13 +58,13 @@
                                 <input type="text" id="firstname" name="firstname" value="" required class="form-control" placeholder="First Name">  &nbsp;
                                 <input type="text" id="lastname" name="lastname" value="" required class="form-control" placeholder="Last Name">  &nbsp;
                             </div>
-                            <div class="input-group mb-3">
+                            <div class="input-group mb-3 row">
                                 <input type="text" id="street" name="street" value="" class="form-control" placeholder="Street">  &nbsp;
                                 <input type="text" id="city" name="city" value="" required class="form-control" placeholder="City">  &nbsp;
-                            </div>
+                            </div>                                
                             <div class="input-group mb-3">
                                 <label class="input-group-text" for="state">State</label>
-                                <select class="form-select  dropdown"  name="state" id="state">
+                                <select class="form-select  dropdown col-md-8"  name="state" id="state">
                                 <option selected value="NJ">NJ</option>
                                 <option value="NY">NY</option>
                                 <option value="PA">PA</option>

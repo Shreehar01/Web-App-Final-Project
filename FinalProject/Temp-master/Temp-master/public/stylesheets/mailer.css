@@ -1,0 +1,14 @@
+.selection{
+    margin-bottom:0.75rem;
+    color:#929292;
+}
+
+.dropdown{
+    width:30%;
+    color: #929292;
+    border-radius: 5%;
+}
+
+.row{
+    margin:auto;
+}

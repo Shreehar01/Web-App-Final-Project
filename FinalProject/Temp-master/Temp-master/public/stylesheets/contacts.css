@@ -1,0 +1,31 @@
+.selection{
+    margin-bottom:0.75rem;
+    color:#929292;
+}
+
+.dropdown{
+    width:30%;
+    color: #929292;
+    border-radius: 5%;
+}
+
+i{			
+    width:15px;
+}
+
+.iconClass{
+    margin-right:3px;
+}
+
+table{
+    zoom:75%;
+}
+
+tr>td{
+    cursor:pointer;
+    color: #656565;
+}
+
+.listEmpty{
+    margin-bottom:50px;
+}
