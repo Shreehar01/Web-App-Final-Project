@@ -67,6 +67,9 @@ table{
     zoom:75%;
 }
 
+th{
+    color: #656565;
+}
 tr>td{
     cursor:pointer;
     color: #656565;
@@ -76,6 +79,19 @@ tr>td{
     margin-bottom:50px;
 }
 
+.searchBox > .col-md-3{
+    margin-left:0px;
+    margin-right:0px;
+    padding-left:2.6px;
+    padding-right:2.6px;
+}
+
+.searchBox > .col-sm-6{
+    margin-left:0px;
+    margin-right:0px;
+    padding-left:2.6px;
+    padding-right:2.6px;
+}
 
 
 

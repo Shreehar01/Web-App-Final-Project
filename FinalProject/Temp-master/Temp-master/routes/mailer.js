@@ -2,16 +2,14 @@ var express = require('express');
 let geo = require('mapbox-geocoding');
 var router = express.Router();
 var database = require('../mongodb.js');
-geo.setAccessToken('pk.eyJ1Ijoic3JpamFuMTIxNCIsImEiOiJjazMyazBkbDAwZGIxM21sYjF6NnVqbnAxIn0.jtPTRywpGF6mJ2ZRbtWJmw');
+geo.setAccessToken('pk.eyJ1Ijoic2pvc2hpNCIsImEiOiJjbDIzaWI4cW8wZDl1M2lxZTJlMjdraWRxIn0.XbNTOeb7oQStDorVMlGzWQ');
 
 router.get('/', function (req, res, next) {
 	res.render('mailer');
 });
 
 router.post('/', function (req, res, next) {
-    console.log("Initiated");
-	let body = req.body;
-    console.log("Initiated: ", req.body);
+    let body = req.body;
     let tempData = {};
     tempData["Name"] = [body["suffix"], body["firstname"], body["lastname"]].join(' ');
     tempData["Address"] = [body["street"], body["city"], body["state"]].join(', ') + " " + body["zip"];

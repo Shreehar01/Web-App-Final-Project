@@ -1,6 +1,6 @@
 var mymap, geocoder, marker = [], locations;
 L.mapbox.accessToken = 'pk.eyJ1Ijoic2pvc2hpNCIsImEiOiJjbDIzaWI4cW8wZDl1M2lxZTJlMjdraWRxIn0.XbNTOeb7oQStDorVMlGzWQ';
-mymap = L.mapbox.map('myMap').setView([ 41.08262, -74.17839 ], 2);
+mymap = L.mapbox.map('myMap').setView([ 41.08262, -74.17839 ], 6);
 L.tileLayer(`https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=${L.mapbox.accessToken}`, {
 attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
 maxZoom: 18,
@@ -31,40 +31,30 @@ for (let i = 1; i < elements.length; i++){
 }
 
 
-
-
-
-var shortDescription;
-function customTip() {
-    this.unbindTooltip();
-    if(!this.isPopupOpen()) this.bindTooltip(shortDescription).openTooltip();
-}
-
-function customPop() {
-    this.unbindTooltip();
-}
-
+var markerCollection = {}
+// Adding a marker and tooltip.
 for (var i = 0; i < contactList.length; i++){
     tempLat = parseFloat(contactList[i]["latitude"]);
     tempLong = parseFloat(contactList[i]["longitude"]);
     let marker = L.marker([tempLat, tempLong]).addTo(mymap);
-    shortDescription = contactList[i]["suffix"] + " " + contactList[i]["firstname"] + " " + contactList[i]["lastname"]; 
     longDescription = ""
-    longDescription += "<p> Name: " + shortDescription + "</p>";
+    longDescription += "<p> Name: " + contactList[i]["suffix"] + " " + contactList[i]["firstname"] + " " + contactList[i]["lastname"] + "</p>";
     longDescription += "<p> Street: " + contactList[i]["street"] + "</p>";
     longDescription += "<p> City and State: " + contactList[i]["city"] + ", " + contactList[i]["state"] + "</p>"
     longDescription += "<p> Zip: " + contactList[i]["zip"] + "</p>";
     longDescription += "<p> Phone: " + contactList[i]["phone"] + "</p>";
-    longDescription += "<p> Latitude : " + contactList[i]["latitude"] + "</p>";
-    longDescription += "<p> Longitude : " + contactList[i]["longitude"] + "</p>";
-    
-    shortDescription = "<p>" + shortDescription + "</p>";
     marker.bindPopup(longDescription);
-    marker.on('mouseover', customTip);
-    marker.on('click', customPop);
+    marker.on('mouseover', function (e) {
+        this.openPopup();
+    });
+    marker.on('mouseout', function (e) {
+        this.closePopup();
+    });
+    let contactId = contactList[i]["id"];
+    markerCollection[contactId] = marker;
 }
 
-
+    
 const flyMap = (node) =>{
     let latitude = node.children[12].dataset.value;
     let longitude = node.children[13].dataset.value;
@@ -80,7 +70,6 @@ const showEditPage = (node) => {
     let editSection = document.getElementById("editPage");
     editSection.style.display = 'block';
     let childNodes = rowNode.children;
-    console.log("Childnodes", childNodes);
     for (let i = 1; i < 9; i++){
         if (i == 5){
             continue;
@@ -114,6 +103,23 @@ const showEditPage = (node) => {
     document.getElementById("contactIdhidden").value = rowNode.dataset.id;
 }
 
+const searchByName = () =>{
+    let fName = document.getElementById('searchFirstName').value;
+    let lName = document.getElementById('searchLastName').value;
+    let elements = document.getElementsByTagName('tr');
+    for (let i = 1; i < elements.length; i++){
+        id = elements[i].dataset.id;
+        childNodes = elements[i].children;
+         if (childNodes[1].dataset.value.toUpperCase().indexOf(fName.toUpperCase()) != -1 && childNodes[2].dataset.value.toUpperCase().indexOf(lName.toUpperCase()) != - 1){
+            elements[i].style.display = ""
+         } else{
+            elements[i].style.display = "none"
+         }
+    }
+}
+
+
+
 
 const hideEditPage = (node) => {
     let mainSection = document.getElementById("initialPage");
@@ -127,8 +133,7 @@ const deleteContact = async (node) => {
     parent = node.parentNode.parentNode.parentNode;
     let response = await axios.post('/contacts/delete', {id: parent.dataset.id});
     if (response.data.message == "success"){
-        id = response.data.id;
+        mymap.removeLayer(markerCollection[parent.dataset.id]);
         parent.remove();
-        
     }
 }

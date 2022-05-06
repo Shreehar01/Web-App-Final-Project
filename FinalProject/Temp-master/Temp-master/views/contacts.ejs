@@ -80,6 +80,18 @@
 							
 						<% } else{ %>
 							<h5 class="card-title">Contact Details </h5>
+								<div class="row searchBox justify-content-md-center">
+									<div class="col-md-3 col-sm-6">
+										<div class="input-group mb-3">
+											<input type="text" oninput = "searchByName()" id="searchFirstName" name="searchFirstName" value="" class="form-control md-hidden" placeholder="First Name">
+										</div>
+									</div>
+									<div class="col-md-3 col-sm-6">
+										<div class="input-group mb-3">
+											<input type="text" oninput = "searchByName()" id="searchLastName" name="searchLastName" value="" class="form-control" placeholder="Last Name">
+										</div>
+									</div>
+								</div>
 							<div class="table-responsive">
 								<table class="table table-hover">
 									<thead>
@@ -111,7 +123,7 @@
 													<% } %>
 												<% } %>
 												<td>
-													<div class="modifyButtons">
+													<div onclick = "event.stopPropagation()" class="modifyButtons">
 														<button class="btn btn-outline-info iconClass" onclick="showEditPage(this)"><i class="fas fa-edit"></i></button>
 														<button class="btn btn-outline-danger iconClass" onclick="deleteContact(this)"><i class="fas fa-trash-alt"></i></button> 
 													</div>
@@ -177,7 +189,7 @@
 								<div class="row">
 									<div class="col-md-6 col-sm-12">
 										<div class="input-group mb-3">
-											<input type="text" id="street" name="street" value="" class="form-control md-hidden" placeholder="Street">
+											<input type="text" id="street" name="street" value="" class="form-control" placeholder="Street">
 										</div>
 									</div>
 									<div class="col-md-6 col-sm-12">

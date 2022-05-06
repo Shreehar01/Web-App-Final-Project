@@ -1,13 +1,10 @@
 var express = require('express');
 var router = express.Router();
-// let mongoHandler = require('../../mongo');
 var database = require('../mongodb.js');
 var mongodb=require('mongodb');
 
 let geo = require('mapbox-geocoding');
-// const e = require('express');
 geo.setAccessToken('pk.eyJ1Ijoic3JpamFuMTIxNCIsImEiOiJjazMyazBkbDAwZGIxM21sYjF6NnVqbnAxIn0.jtPTRywpGF6mJ2ZRbtWJmw');
-
 
 var ensureLoggedIn = function(req, res, next) {
 	if ( req.user ) {
@@ -21,9 +18,7 @@ var ensureLoggedIn = function(req, res, next) {
 
 router.get('/', ensureLoggedIn, async function (req, res, next) {
 	try{
-		console.log('Called');
 		let results = await database.get().db('contacts').collection('contacts').find().toArray();
-		console.log(results);
 		res.render('contacts', { values: results });
 	} catch(error){
 		console.log(error.message);
@@ -31,8 +26,6 @@ router.get('/', ensureLoggedIn, async function (req, res, next) {
 });
 
 router.post('/update', ensureLoggedIn, function (req, res, next) {
-	console.log("Update was called.");
-	console.log(req.body);
 	let body = req.body;
     let contactInfo = body;
 	let contactId = body['contactId']
@@ -46,19 +39,15 @@ router.post('/update', ensureLoggedIn, function (req, res, next) {
 	geo.geocode('mapbox.places', address, async function (err, geoData) {
 		contactInfo["latitude"] = geoData.features[0].center[1];	
 		contactInfo["longitude"] = geoData.features[0].center[0];
-		console.log(contactInfo);
-		console.log(contactId);
-        await database.get().db('contacts').collection('contacts').updateOne({_id:new mongodb.ObjectID(contactId)},{ $set:contactInfo});
+		await database.get().db('contacts').collection('contacts').updateOne({_id:new mongodb.ObjectID(contactId)},{ $set:contactInfo});
         res.redirect('/contacts/');
 	});
 
 });
 
 router.post('/delete', ensureLoggedIn, async function (req, res, next) {
-	console.log("Delete was called.")
 	let contactId = req.body.id;
 	await database.get().db('contacts').collection('contacts').deleteOne({_id:new mongodb.ObjectID(contactId)});
-	// res.redirect('/contacts/');
 	res.end(JSON.stringify({message: 'success'}));
 });
 
