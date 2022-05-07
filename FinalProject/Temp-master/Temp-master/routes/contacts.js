@@ -4,7 +4,7 @@ var database = require('../mongodb.js');
 var mongodb=require('mongodb');
 
 let geo = require('mapbox-geocoding');
-geo.setAccessToken('pk.eyJ1Ijoic3JpamFuMTIxNCIsImEiOiJjazMyazBkbDAwZGIxM21sYjF6NnVqbnAxIn0.jtPTRywpGF6mJ2ZRbtWJmw');
+geo.setAccessToken('pk.eyJ1Ijoic2pvc2hpNCIsImEiOiJjbDIzaWI4cW8wZDl1M2lxZTJlMjdraWRxIn0.XbNTOeb7oQStDorVMlGzWQ');
 
 var ensureLoggedIn = function(req, res, next) {
 	if ( req.user ) {

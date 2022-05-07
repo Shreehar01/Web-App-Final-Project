@@ -32,21 +32,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
-
-// let mailRoutes = ('./routes/mailer');
-// let contactRoutes = ('./routes/contacts');
 let authRoutes = require('./routes/auth');
 let contactRoutes = require('./routes/contacts');
 let mailRoutes = require('./routes/mailer');
-
-
-
-//  Delete this 
-// let mongoHandler = require('./public/javascripts/mongo');
-
-
-
-
 
 
 passport.use(new LocalStrategy({
